@@ -5,11 +5,17 @@
 #include <gfxfont.h>
 #include <PDQ_GFX.h>
 
+//#include <Adafruit_GFX.h>    // Core graphics library
+//#include <Adafruit_ST7735.h> // Hardware-specific library
+//#include <SPI.h>
+
 #include <TimerOne.h>
 
 #ifndef _PDQ_ST7735H_
+#define TFT_CS 10
+#define TFT_DC 8
 #define TFT_RST 0  // you can also connect this to the Arduino reset, in which case, set this #define pin to 0!
-Adafruit_ST7735 tft = Adafruit_ST7735(ST7735_CS_PIN, ST7735_DC_PIN, TFT_RST);
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 #else
 PDQ_ST7735 tft;
 #endif
@@ -56,6 +62,7 @@ void processButtons()
 	{
 		time.ss = 0;
 		drawClock();
+    delay(75);
 	}
 }
 
@@ -63,7 +70,11 @@ void processButtons()
 
 void setup()
 {
-	tft.initR(ST7735_INITR_144GREENTAB); // initialize a ST7735S chip, 1.44" TFT, black tab
+#ifdef _PDQ_ST7735H_
+  tft.initR(ST7735_INITR_144GREENTAB); // initialize a ST7735S chip, 1.44" TFT
+#else
+	tft.initR(INITR_144GREENTAB); // initialize a ST7735S chip, 1.44" TFT
+#endif
 	tft.fillScreen(ST7735_BLACK);
 	tft.setTextWrap(false);
 
