@@ -14,7 +14,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(ST7735_CS_PIN, ST7735_DC_PIN, TFT_RST);
 PDQ_ST7735 tft;
 #endif
 
-constexpr auto HourButton = B0, MinuteButton = B1;
+constexpr auto HourButtonPin = 2, MinuteButtonPin = 3;
 
 // Time since 00:00 (12 AM)
 struct
@@ -43,8 +43,8 @@ inline void onTick()
 
 void processButtons()
 {
-	const bool hrBtnPressed = digitalRead(HourButton) == HIGH;
-	const bool minuteBtnPressed = digitalRead(MinuteButton) == HIGH;
+	const bool hrBtnPressed = digitalRead(HourButtonPin) == HIGH;
+	const bool minuteBtnPressed = digitalRead(MinuteButtonPin) == HIGH;
 
 	if (hrBtnPressed)
 		time.hh = time.hh == 23 ? 0 : time.hh + 1;
@@ -74,8 +74,8 @@ void setup()
 	tft.setTextColor(RGB_to_565(0, 127, 255), RGB_to_565(0, 0, 0));
 	tft.fillScreen(RGB_to_565(0, 0, 0));
 
-	pinMode(HourButton, INPUT); // Hours inc button
-	pinMode(MinuteButton, INPUT); // Minutes inc button
+	pinMode(HourButtonPin, INPUT); // Hours inc button
+	pinMode(MinuteButtonPin, INPUT); // Minutes inc button
 
 	drawClock();
 }
